@@ -1,21 +1,53 @@
+import { useState } from 'react';
 import './styles.css';
 
 import ResultCard from 'components/ResultCard';
 
+type FormData = {
+  cep: string;
+  teste: string;
+};
+
 const CepSearch = () => {
 
+  const [formData, setFormData] = useState<FormData>({
+    cep: '',
+    teste: ''
+  });
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const name = event.target.name;
+    const value = event.target.value;
+
+    setFormData(formData => ({ ...formData, [name]: value }));
+  }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(formData);
+  }
 
   return (
     <div className="cep-search-container">
       <h1 className="text-primary">Busca CEP</h1>
       <div className="container search-container">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="form-container">
             <input
               type="text"
+              name='cep'
+              value={formData.cep}
               className="search-input"
               placeholder="CEP (somente números)"
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name='teste'
+              value={formData.teste}
+              className="search-input"
+              placeholder="Teste"
+              onChange={handleChange}
             />
             <button type="submit" className="btn btn-primary search-button">
               Buscar
